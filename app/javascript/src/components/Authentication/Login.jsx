@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,6 +13,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
   const classes = useStyles();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const initialValues = {
     email: "",
@@ -35,6 +37,7 @@ const Login = () => {
 
   const handleLogin = async (values) => {
     try {
+      setIsLoading(true);
       await authenticationApis.login({
         user: {
           email: values.email,
@@ -44,6 +47,8 @@ const Login = () => {
       window.location.href = "/";
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -95,6 +100,7 @@ const Login = () => {
             size="large"
             type="submit"
             className={classes.customButton}
+            disabled={isLoading}
           >
             Login
           </Button>

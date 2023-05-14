@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Button, TextField, Modal, Typography, Box } from "@material-ui/core";
+import SendIcon from '@mui/icons-material/Send';
 
 const style = {
   position: "absolute",
@@ -14,12 +15,13 @@ const style = {
   p: 4,
 };
 
-const NewReferralModal = ({
+const ReferralModal = ({
   isModalOpen,
   handleSubmit,
   referredEmail, 
   setReferredEmail,
-  handleClose
+  handleClose,
+  isLoading
 }) => {
 
   return (
@@ -61,6 +63,8 @@ const NewReferralModal = ({
             size="medium"
             className="self-end"
             onClick={() => handleSubmit(referredEmail)}
+            disabled={isLoading}
+            endIcon={<SendIcon />}
           >
             Send
           </Button>
@@ -70,4 +74,4 @@ const NewReferralModal = ({
   );
 };
 
-export default NewReferralModal;
+export default ReferralModal;

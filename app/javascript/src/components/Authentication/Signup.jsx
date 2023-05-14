@@ -4,7 +4,6 @@ import { Button, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import authenticationApis from "../../apis/authentication";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const useStyles = makeStyles((theme) => ({
   customButton: {
@@ -15,19 +14,32 @@ const useStyles = makeStyles((theme) => ({
 const Signup = () => {
   const classes = useStyles();
   const queryParams = new URLSearchParams(window.location.search);
-  const referralCode = queryParams.get('referral_code');
+  const referralCode = queryParams.get("referral_code");
 
   const initialValues = {
     email: "",
     password: "",
     passwordConfirmation: "",
+    firstName: "",
+    lastName: "",
   };
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const isEmailValid = (email) => emailRegex.test(email);
 
   const validate = (values) => {
     const errors = {};
 
+    if (!values.firstName) {
+      errors.firstName = "First name is required";
+    }
+
     if (!values.email) {
       errors.email = "Email is required";
+    }
+
+    if(!isEmailValid(values.email)){
+      errors.email = "Email should be of valid format";
     }
 
     if (!values.password) {
@@ -45,8 +57,8 @@ const Signup = () => {
           password: values.password,
           password_confirmation: values.passwordConfirmation,
           referral_code: referralCode,
-          // first_name: values.first_name,
-          // last_name: values.last_name,
+          first_name: values.firstName,
+          last_name: values.lastName,
         },
       });
 
@@ -69,21 +81,41 @@ const Signup = () => {
           Signup
         </Typography>
         <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6">
-          {/* <TextField
-            label="First Name"
-            variant="outlined"
-            name="email"
-            size="small"
-            InputProps={{
-              style: { borderRadius: "8px" },
-            }}
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.email && !!formik.errors.email}
-            helperText={formik.touched.email && formik.errors.email}
-          /> */}
+          <div className="flex gap-4">
+            <TextField
+              required
+              className="w-full"
+              label="First Name"
+              variant="outlined"
+              name="firstName"
+              size="small"
+              InputProps={{
+                style: { borderRadius: "8px" },
+              }}
+              value={formik.values.firstName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.firstName && !!formik.errors.firstName}
+              helperText={formik.touched.firstName && formik.errors.firstName}
+            />
+            <TextField
+              className="w-full"
+              label="Last Name"
+              variant="outlined"
+              name="lastName"
+              size="small"
+              InputProps={{
+                style: { borderRadius: "8px" },
+              }}
+              value={formik.values.lastName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.lastName && !!formik.errors.lastName}
+              helperText={formik.touched.lastName && formik.errors.lastName}
+            />
+          </div>
           <TextField
+            required
             label="Email"
             variant="outlined"
             name="email"
@@ -98,6 +130,7 @@ const Signup = () => {
             helperText={formik.touched.email && formik.errors.email}
           />
           <TextField
+            required
             label="Password"
             variant="outlined"
             type="password"
@@ -113,6 +146,7 @@ const Signup = () => {
             helperText={formik.touched.password && formik.errors.password}
           />
           <TextField
+            required
             label="Password Confirmation"
             variant="outlined"
             type="password"
@@ -139,6 +173,7 @@ const Signup = () => {
             size="large"
             type="submit"
             className={classes.customButton}
+            disabled={formik.isSubmitting}
           >
             Signup
           </Button>

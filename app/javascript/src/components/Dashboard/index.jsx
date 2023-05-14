@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -7,10 +7,11 @@ import {
   InputAdornment,
   Typography,
 } from "@material-ui/core";
-import SearchIcon from "@mui/icons-material/Search";
+import { Search, ExitToApp } from "@mui/icons-material";
 import EmailAddressTable from "./Table";
-import NewReferralModal from "./NewReferralModal";
+import ReferralModal from "./ReferralModal";
 import referralApis from "../../apis/referrals";
+import authenticationApis from "../../apis/authentication";
 
 const useStyles = makeStyles({
   iconColor: {
@@ -23,6 +24,10 @@ const Dashboard = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [referredEmail, setReferredEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [emailAddresses, setEmailAddresses] = useState([]);
+  const [isEmailsLoading, setIsEmailsLoading] = useState(true);
+  //const [searchTerm, setSearchTerm] = useState("");
 
   const handleClose = () => {
     setReferredEmail("");
@@ -31,17 +36,45 @@ const Dashboard = () => {
 
   const handleOpen = () => setIsModalOpen(true);
 
-  const handleSubmit = async (referredEmail) => {
+  const fetchEmailAddresses = async () => {
     try {
-      await referralApis.create({
-        referral: { referred_email: referredEmail },
-      });
+      setIsEmailsLoading(true);
+      const response = await referralApis.fetchEmails();
+      setEmailAddresses(response.data.referrals);
     } catch (error) {
       console.log(error);
     } finally {
-      handleClose()
+      setIsEmailsLoading(false);
     }
   };
+
+  const handleSubmit = async (referredEmail) => {
+    try {
+      setIsLoading(true);
+      await referralApis.create({
+        referral: { referred_email: referredEmail },
+      });
+      fetchEmailAddresses();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      handleClose();
+      setIsLoading(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await authenticationApis.logout();
+      window.location.href = "/";
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmailAddresses();
+  }, []);
 
   return (
     <div className="flex flex-col gap-6 m-8">
@@ -49,38 +82,47 @@ const Dashboard = () => {
         <Typography variant="h5" className="self-center">
           Referred Email Addresses
         </Typography>
-        <div className="flex gap-4 self-end">
-          <TextField
-            variant="outlined"
-            name="search"
-            size="small"
-            placeholder="Search"
-            InputProps={{
-              style: { borderRadius: "8px" },
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon className={classes.iconColor} />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            size="medium"
-            onClick={handleOpen}
-          >
-            New Referral
-          </Button>
-        </div>
+        <Button onClick={handleSignOut} endIcon={<ExitToApp />}>
+          Sign out
+        </Button>
       </div>
-      <EmailAddressTable />
-      <NewReferralModal
+      <div className="flex gap-4 self-end">
+        <TextField
+          variant="outlined"
+          name="search"
+          size="small"
+          placeholder="Search"
+          // value={searchTerm}
+          // onChange={e=>setSearchTerm(e.target.value)}
+          InputProps={{
+            style: { borderRadius: "8px" },
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search className={classes.iconColor} />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          size="medium"
+          onClick={handleOpen}
+        >
+          New Referral
+        </Button>
+      </div>
+      <EmailAddressTable
+        emailAddresses={emailAddresses}
+        isEmailsLoading={isEmailsLoading}
+      />
+      <ReferralModal
         isModalOpen={isModalOpen}
         handleSubmit={handleSubmit}
         handleClose={handleClose}
-        referredEmail ={referredEmail}
+        referredEmail={referredEmail}
         setReferredEmail={setReferredEmail}
+        isLoading={isLoading}
       />
     </div>
   );

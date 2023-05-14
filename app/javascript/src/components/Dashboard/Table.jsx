@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -32,24 +32,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const EmailAddressTable = () => {
+const EmailAddressTable = ({emailAddresses, isEmailsLoading}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [emailAddresses, setEmailAddresses] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const fetchEmailAddresses = async () => {
-    try {
-      setIsLoading(true)
-      const response = await referralApis.fetchEmails();
-      setEmailAddresses(response.data.referrals);
-    } catch (error) {
-      console.log(error);
-    }finally{
-      setIsLoading(false)
-    }
-  };
-
+ 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -59,11 +45,7 @@ const EmailAddressTable = () => {
     setPage(0);
   };
 
-  useEffect(() => {
-    fetchEmailAddresses();
-  }, []);
-
-  if (isLoading) {
+  if (isEmailsLoading) {
     return (
       <div className="flex h-screen w-screen justify-center">
         <CircularProgress className="self-center" size="3rem" />

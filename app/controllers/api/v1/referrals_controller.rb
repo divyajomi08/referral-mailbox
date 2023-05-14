@@ -17,8 +17,6 @@ class Api::V1::ReferralsController < ApplicationController
     end
   end
 
-  def update; end
-
   private
 
   def referral_params
