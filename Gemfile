@@ -21,8 +21,11 @@ gem "webpacker"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
-#React
+# React
 gem 'react-rails'
+
+# Flexible authentication solution for Rails with Warden.
+gem 'devise'
 
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0"
