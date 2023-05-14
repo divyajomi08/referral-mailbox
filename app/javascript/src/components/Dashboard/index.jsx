@@ -10,6 +10,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import EmailAddressTable from "./Table";
 import NewReferralModal from "./NewReferralModal";
+import referralApis from "../../apis/referrals";
 
 const useStyles = makeStyles({
   iconColor: {
@@ -19,9 +20,23 @@ const useStyles = makeStyles({
 
 const Dashboard = () => {
   const classes = useStyles();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpen = () => setIsModalOpen(true);
+  const handleClose = () => setIsModalOpen(false);
+
+  const handleSubmit = async (referredEmail) => {
+    try {
+      await referralApis.create({
+        referral: { referred_email: referredEmail },
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      handleClose();
+    }
+  };
 
   return (
     <div className="flex flex-col gap-6 m-8">
@@ -55,7 +70,12 @@ const Dashboard = () => {
         </div>
       </div>
       <EmailAddressTable />
-      <NewReferralModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <NewReferralModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        handleSubmit={handleSubmit}
+        handleClose={handleClose}
+      />
     </div>
   );
 };

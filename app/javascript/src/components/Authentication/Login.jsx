@@ -4,7 +4,6 @@ import { Button, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import authenticationApis from "../../apis/authentication";
-import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   customButton: {
@@ -14,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
   const classes = useStyles();
-  const history = useHistory();
 
   const initialValues = {
     email: "",
@@ -43,7 +41,7 @@ const Login = () => {
           password: values.password,
         },
       });
-      history.push("/");
+      window.location.href = "/";
     } catch (error) {
       console.log(error);
     }

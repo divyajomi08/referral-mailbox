@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Button, TextField, Modal, Typography, Box } from "@material-ui/core";
 
@@ -14,8 +14,9 @@ const style = {
   p: 4,
 };
 
-const NewReferralModal = ({ isModalOpen, setIsModalOpen }) => {
-  const handleClose = () => setIsModalOpen(false);
+const NewReferralModal = ({ isModalOpen, setIsModalOpen, handleSubmit, handleClose }) => {
+  const [referredEmail, setReferredEmail] = useState("");
+
 
   return (
     <Modal
@@ -46,6 +47,8 @@ const NewReferralModal = ({ isModalOpen, setIsModalOpen }) => {
               InputProps={{
                 style: { borderRadius: "8px" },
               }}
+              value={referredEmail}
+              onChange={(e) => setReferredEmail(e.target.value)}
             />
           </div>
           <Button
@@ -53,6 +56,7 @@ const NewReferralModal = ({ isModalOpen, setIsModalOpen }) => {
             color="primary"
             size="medium"
             className="self-end"
+            onClick={()=>handleSubmit(referredEmail)}
           >
             Send
           </Button>
