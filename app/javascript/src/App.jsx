@@ -1,13 +1,14 @@
 import React, { createContext, useEffect, useState } from "react";
 
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
-import { setAuthHeaders } from "apis/axios";
+import {registerIntercepts, setAuthHeaders } from "apis/axios";
 import Signup from "./components/Authentication/Signup";
 import Login from "./components/Authentication/Login";
 import Dashboard from "./components/Dashboard/index";
 import authenticationApis from "./apis/authentication";
 import CircularProgress from "@mui/material/CircularProgress";
-import RedirectRoute from "./components/RedirectRoute";
+import RedirectRoute from "./components/Common/RedirectRoute";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -27,6 +28,7 @@ const App = () => {
 
   useEffect(() => {
     setAuthHeaders(setLoading);
+    registerIntercepts();
     authenticateUser();
   }, []);
 
@@ -39,6 +41,7 @@ const App = () => {
   }
   return (
     <Router>
+      <ToastContainer />
       <Switch>
         <RedirectRoute
           path="/signup"

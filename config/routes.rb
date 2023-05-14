@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { registrations: 'registrations' }
+  devise_for :users, controllers: { registrations: 'api/v1/registrations' }
   namespace :api, defaults: { format: :json } do
     namespace :v1, defaults: { format: :json } do
       resources :referrals, only: %i[index create]
