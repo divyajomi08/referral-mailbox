@@ -6,6 +6,8 @@ const logout = () => axios.delete("/users/sign_out");
 
 const signup = (payload) => axios.post("/users",payload);
 
-const authenticationApis = { signup, login, logout };
+const isLoggedIn = ()=>axios.get("/logged_in");
+
+const authenticationApis = { signup, login, logout, isLoggedIn };
 
 export default authenticationApis

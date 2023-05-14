@@ -4,6 +4,7 @@ import { Button, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import authenticationApis from "../../apis/authentication";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   customButton: {
@@ -13,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Signup = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   const initialValues = {
     email: "",
@@ -35,14 +37,14 @@ const Signup = () => {
 
   const handleSignup = async (values) => {
     try {
-      await authenticationApis.signup(
-        JSON.stringify({
-          user: {
-            email: values.email,
-            password: values.password,
-          },
-        })
-      );
+      await authenticationApis.signup({
+        user: {
+          email: values.email,
+          password: values.password,
+          password_confirmation: values.passwordConfirmation,
+        },
+      });
+      history.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -90,7 +92,7 @@ const Signup = () => {
             error={formik.touched.password && !!formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
           />
-          {/* <TextField
+          <TextField
             label="Password Confirmation"
             variant="outlined"
             type="password"
@@ -110,7 +112,7 @@ const Signup = () => {
               formik.touched.passwordConfirmation &&
               formik.errors.passwordConfirmation
             }
-          /> */}
+          />
           <Button
             variant="contained"
             color="primary"
