@@ -3,7 +3,7 @@ import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import { setAuthHeaders } from "apis/axios";
 import Signup from "./components/Authentication/Signup";
 import Login from "./components/Authentication/Login";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/Dashboard/index";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
