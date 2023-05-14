@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Signup = () => {
   const classes = useStyles();
-  const  history= useHistory();
+  const history = useHistory();
 
   const initialValues = {
     email: "",
@@ -37,15 +37,14 @@ const Signup = () => {
 
   const handleSignup = async (values) => {
     try {
-      await authenticationApis.signup(
-        JSON.stringify({
-          user: {
-            email: values.email,
-            password: values.password,
-          },
-        })
-      );
-      history.push("/dashboard")
+      await authenticationApis.signup({
+        user: {
+          email: values.email,
+          password: values.password,
+          password_confirmation: values.passwordConfirmation,
+        },
+      });
+      history.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -93,7 +92,7 @@ const Signup = () => {
             error={formik.touched.password && !!formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
           />
-          {/* <TextField
+          <TextField
             label="Password Confirmation"
             variant="outlined"
             type="password"
@@ -113,7 +112,7 @@ const Signup = () => {
               formik.touched.passwordConfirmation &&
               formik.errors.passwordConfirmation
             }
-          /> */}
+          />
           <Button
             variant="contained"
             color="primary"

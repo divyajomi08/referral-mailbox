@@ -35,17 +35,15 @@ const Login = () => {
     return errors;
   };
 
-  const handleLogin= async (values) => {
+  const handleLogin = async (values) => {
     try {
-      await authenticationApis.login(
-        JSON.stringify({
-          user: {
-            email: values.email,
-            password: values.password,
-          },
-        })
-      );
-      history.push("/dashboard")
+      await authenticationApis.login({
+        user: {
+          email: values.email,
+          password: values.password,
+        },
+      });
+      history.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +52,7 @@ const Login = () => {
   const formik = useFormik({
     initialValues,
     validate,
-    onSubmit: (values) => handleLogin(values)
+    onSubmit: (values) => handleLogin(values),
   });
 
   return (
@@ -63,10 +61,7 @@ const Login = () => {
         <Typography variant="h4" className="self-center">
           Login
         </Typography>
-        <form
-          onSubmit={formik.handleSubmit}
-          className="flex flex-col gap-6"
-        >
+        <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6">
           <TextField
             label="Email"
             variant="outlined"
@@ -107,7 +102,7 @@ const Login = () => {
           </Button>
         </form>
         <Typography variant="subtitle2" className="self-center text-gray-600">
-          Don't have an account?&nbsp; 
+          Don't have an account?&nbsp;
           <Link className="underline text-black" to="/signup">
             Create account
           </Link>
