@@ -1,5 +1,5 @@
 class ReferralMailer < ApplicationMailer
-  def send_referral(referred_email, referred_by_id)
+  def referral_email(referred_email, referred_by_id)
     user = User.find(referred_by_id)
 
     @referrer_name = user.display_name

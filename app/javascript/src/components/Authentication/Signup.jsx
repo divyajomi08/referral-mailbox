@@ -4,6 +4,7 @@ import { Button, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import authenticationApis from "../../apis/authentication";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const useStyles = makeStyles((theme) => ({
   customButton: {
@@ -13,11 +14,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Signup = () => {
   const classes = useStyles();
+  const queryParams = new URLSearchParams(window.location.search);
+  const referralCode = queryParams.get('referral_code');
 
   const initialValues = {
     email: "",
     password: "",
-    passwordConfirmation: ""
+    passwordConfirmation: "",
   };
 
   const validate = (values) => {
@@ -41,8 +44,12 @@ const Signup = () => {
           email: values.email,
           password: values.password,
           password_confirmation: values.passwordConfirmation,
+          referral_code: referralCode,
+          // first_name: values.first_name,
+          // last_name: values.last_name,
         },
       });
+
       window.location.href = "/";
     } catch (error) {
       console.log(error);
@@ -62,6 +69,20 @@ const Signup = () => {
           Signup
         </Typography>
         <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6">
+          {/* <TextField
+            label="First Name"
+            variant="outlined"
+            name="email"
+            size="small"
+            InputProps={{
+              style: { borderRadius: "8px" },
+            }}
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && !!formik.errors.email}
+            helperText={formik.touched.email && formik.errors.email}
+          /> */}
           <TextField
             label="Email"
             variant="outlined"

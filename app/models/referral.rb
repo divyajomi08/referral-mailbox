@@ -6,6 +6,7 @@ class Referral < ApplicationRecord
 
   belongs_to :referred_by, class_name: 'User'
 
-  validates :referred_email, presence: true, length: { maximum: 50 }, format: { with: VALID_EMAIL_REGEX }
+  validates :referred_email, presence: true, length: { maximum: 50 }, format: { with: VALID_EMAIL_REGEX },
+                             uniqueness: { scope: :referred_by_id, message: 'has already been referred' }
   validates :referred_by, presence: true
 end

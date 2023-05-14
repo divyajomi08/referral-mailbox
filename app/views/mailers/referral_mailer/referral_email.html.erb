@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+</head>
+<body>
+  <h1>You've been referred to Referral Mailbox - Sign up now!</h1>
+  <p>Hello,</p>
+  
+  <p><%= @referrer_name %> has referred you to our application.</p>
+  <p>Sign up now and explore the application!</p>
+
+  <p>Click <a href="<%= url_for(controller: 'home', action: 'index', only_path: false)+"signup?referral_code=#{@referral_code}" %>">here</a> to create your account.</p>
+  
+  <p>Thank you for joining our community!</p>
+  
+  <p>Best regards,</p>
+  <p>The Referral Mailbox Team</p>
+</body>
+</html>

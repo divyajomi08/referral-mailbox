@@ -13,7 +13,7 @@ class User < ApplicationRecord
   end
 
   def display_name
-    name || email
+    name.present? ? name : email
   end
 
   private

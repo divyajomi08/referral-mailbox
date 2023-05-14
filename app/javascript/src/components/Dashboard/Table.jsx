@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,6 +10,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import { Typography } from "@material-ui/core";
+import referralApis from "../../apis/referrals";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -29,24 +32,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const createData = (id, emailAddress, status) => {
-  return { id, emailAddress, status };
-};
-const rows = [];
-// const rows = [
-//   createData(1, "oliver@gmail.com", "pending"),
-//   createData(2, "steve@gmail.com", "pending"),
-//   createData(3, "mathew@gmail.com", "accepted"),
-//   createData(4, "sam@gmail.com", "pending"),
-//   createData(5, "john@gmail.com", "accepted"),
-//   createData(6, "melvinw@gmail.com", "accepted"),
-//   createData(7, "aby@gmail.com", "pending"),
-//   createData(8, "smith@gmail.com", "accepted"),
-// ];
-
 const EmailAddressTable = () => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [emailAddresses, setEmailAddresses] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchEmailAddresses = async () => {
+    try {
+      setIsLoading(true)
+      const response = await referralApis.fetchEmails();
+      setEmailAddresses(response.data.referrals);
+    } catch (error) {
+      console.log(error);
+    }finally{
+      setIsLoading(false)
+    }
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -56,6 +58,18 @@ const EmailAddressTable = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  useEffect(() => {
+    fetchEmailAddresses();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-screen justify-center">
+        <CircularProgress className="self-center" size="3rem" />
+      </div>
+    );
+  }
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -67,7 +81,7 @@ const EmailAddressTable = () => {
               <StyledTableCell>Status</StyledTableCell>
             </TableRow>
           </TableHead>
-          {rows.length === 0 ? (
+          {emailAddresses.length === 0 ? (
             <TableRow>
               <TableCell colSpan={2}>
                 <Typography variant="body1" className="flex justify-center">
@@ -77,10 +91,10 @@ const EmailAddressTable = () => {
             </TableRow>
           ) : (
             <TableBody>
-              {rows.map((row) => (
+              {emailAddresses.map((row) => (
                 <StyledTableRow key={row.id}>
                   <StyledTableCell component="th" scope="row">
-                    {row.emailAddress}
+                    {row.referred_email}
                   </StyledTableCell>
                   <StyledTableCell align="left">{row.status}</StyledTableCell>
                 </StyledTableRow>
@@ -89,11 +103,11 @@ const EmailAddressTable = () => {
           )}
         </Table>
       </TableContainer>
-      {rows.length !== 0 && (
+      {emailAddresses.length !== 0 && (
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 100]}
           component="div"
-          count={rows.length}
+          count={emailAddresses.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

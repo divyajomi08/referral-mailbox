@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_14_121059) do
+ActiveRecord::Schema.define(version: 2023_05_14_143255) do
 
   create_table "referrals", force: :cascade do |t|
     t.integer "referred_by_id", null: false
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2023_05_14_121059) do
     t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["referred_by_id", "referred_email"], name: "index_unique_referrals", unique: true
     t.index ["referred_by_id"], name: "index_referrals_on_referred_by_id"
   end
 

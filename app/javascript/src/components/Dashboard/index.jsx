@@ -22,9 +22,14 @@ const Dashboard = () => {
   const classes = useStyles();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [referredEmail, setReferredEmail] = useState("");
+
+  const handleClose = () => {
+    setReferredEmail("");
+    setIsModalOpen(false);
+  };
 
   const handleOpen = () => setIsModalOpen(true);
-  const handleClose = () => setIsModalOpen(false);
 
   const handleSubmit = async (referredEmail) => {
     try {
@@ -34,7 +39,7 @@ const Dashboard = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      handleClose();
+      handleClose()
     }
   };
 
@@ -72,9 +77,10 @@ const Dashboard = () => {
       <EmailAddressTable />
       <NewReferralModal
         isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
         handleSubmit={handleSubmit}
         handleClose={handleClose}
+        referredEmail ={referredEmail}
+        setReferredEmail={setReferredEmail}
       />
     </div>
   );

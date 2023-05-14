@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from 'react';
 
 import { Button, TextField, Modal, Typography, Box } from "@material-ui/core";
 
@@ -14,9 +14,13 @@ const style = {
   p: 4,
 };
 
-const NewReferralModal = ({ isModalOpen, setIsModalOpen, handleSubmit, handleClose }) => {
-  const [referredEmail, setReferredEmail] = useState("");
-
+const NewReferralModal = ({
+  isModalOpen,
+  handleSubmit,
+  referredEmail, 
+  setReferredEmail,
+  handleClose
+}) => {
 
   return (
     <Modal
@@ -56,7 +60,7 @@ const NewReferralModal = ({ isModalOpen, setIsModalOpen, handleSubmit, handleClo
             color="primary"
             size="medium"
             className="self-end"
-            onClick={()=>handleSubmit(referredEmail)}
+            onClick={() => handleSubmit(referredEmail)}
           >
             Send
           </Button>

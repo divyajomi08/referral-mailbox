@@ -41,16 +41,16 @@ const App = () => {
     <Router>
       <Switch>
         <RedirectRoute
-          path="/login"
-          redirectRoute="/"
-          condition={!isLoggedIn}
-          component={Login}
-        />
-        <RedirectRoute
           path="/signup"
           redirectRoute="/"
           condition={!isLoggedIn}
           component={Signup}
+        />
+        <RedirectRoute
+          path="/login"
+          redirectRoute="/"
+          condition={!isLoggedIn}
+          component={Login}
         />
         <RedirectRoute
           path="/"
