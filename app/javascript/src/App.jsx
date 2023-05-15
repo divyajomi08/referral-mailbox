@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
+
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
-import { setAuthHeaders } from "apis/axios";
+import {registerIntercepts, setAuthHeaders } from "apis/axios";
 import Signup from "./components/Authentication/Signup";
 import Login from "./components/Authentication/Login";
 import Dashboard from "./components/Dashboard/index";
-import PrivateRoute from "./components/PrivateRoute";
 import authenticationApis from "./apis/authentication";
 import CircularProgress from "@mui/material/CircularProgress";
+import RedirectRoute from "./components/Common/RedirectRoute";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -26,6 +28,7 @@ const App = () => {
 
   useEffect(() => {
     setAuthHeaders(setLoading);
+    registerIntercepts();
     authenticateUser();
   }, []);
 
@@ -38,10 +41,21 @@ const App = () => {
   }
   return (
     <Router>
+      <ToastContainer />
       <Switch>
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/login" component={Login} />
-        <PrivateRoute
+        <RedirectRoute
+          path="/signup"
+          redirectRoute="/"
+          condition={!isLoggedIn}
+          component={Signup}
+        />
+        <RedirectRoute
+          path="/login"
+          redirectRoute="/"
+          condition={!isLoggedIn}
+          component={Login}
+        />
+        <RedirectRoute
           path="/"
           redirectRoute="/login"
           condition={isLoggedIn}

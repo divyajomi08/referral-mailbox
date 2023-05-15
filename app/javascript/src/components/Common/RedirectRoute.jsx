@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const PrivateRoute = ({
+const RedirectRoute = ({
   component: Component,
   condition,
   path,
@@ -22,7 +22,7 @@ const PrivateRoute = ({
   return <Route path={path} component={Component} {...props} />;
 };
 
-PrivateRoute.propTypes = {
+RedirectRoute.propTypes = {
   component: PropTypes.func,
   condition: PropTypes.bool,
   path: PropTypes.string,
@@ -30,4 +30,4 @@ PrivateRoute.propTypes = {
   location: PropTypes.object
 };
 
-export default PrivateRoute;
+export default RedirectRoute;

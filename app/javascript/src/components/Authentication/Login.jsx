@@ -1,25 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
+
 import { useFormik } from "formik";
 import { Button, TextField, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import authenticationApis from "../../apis/authentication";
-import { useHistory } from "react-router-dom/cjs/react-router-dom";
-
-const useStyles = makeStyles((theme) => ({
-  customButton: {
-    borderRadius: "8px",
-  },
-}));
+import { Link } from "react-router-dom/cjs/react-router-dom";
+import authenticationApis from "apis/authentication";
+import { useButtonStyles } from "utils";
+import { LOGIN_INITIAL_VALUES } from "constants";
 
 const Login = () => {
-  const classes = useStyles();
-  const history = useHistory();
-
-  const initialValues = {
-    email: "",
-    password: "",
-  };
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const classes = useButtonStyles();
+  const initialValues =  LOGIN_INITIAL_VALUES;
 
   const validate = (values) => {
     const errors = {};
@@ -37,15 +29,18 @@ const Login = () => {
 
   const handleLogin = async (values) => {
     try {
+      setIsLoading(true);
       await authenticationApis.login({
         user: {
           email: values.email,
           password: values.password,
         },
       });
-      history.push("/");
+      window.location.href = "/";
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -97,6 +92,7 @@ const Login = () => {
             size="large"
             type="submit"
             className={classes.customButton}
+            disabled={isLoading}
           >
             Login
           </Button>
