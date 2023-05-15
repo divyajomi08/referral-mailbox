@@ -23,7 +23,7 @@ const Dashboard = () => {
   const [emailAddresses, setEmailAddresses] = useState([]);
   const [isEmailsLoading, setIsEmailsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const debounceSearchTerm = useDebounce(searchTerm, 300);
@@ -40,7 +40,7 @@ const Dashboard = () => {
       setIsEmailsLoading(true);
       const response = await referralApis.fetchEmails(
         searchTerm,
-        page,
+        page+1,
         rowsPerPage
       );
       setEmailAddresses(response.data);

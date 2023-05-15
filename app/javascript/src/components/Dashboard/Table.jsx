@@ -21,14 +21,13 @@ const EmailAddressTable = ({
   page,
   setPage,
 }) => {
-
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(event.target.value);
-    setPage(1);
+    setPage(0);
   };
 
   if (isEmailsLoading) {
