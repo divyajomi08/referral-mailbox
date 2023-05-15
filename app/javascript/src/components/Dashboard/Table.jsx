@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,7 +11,7 @@ import TablePagination from "@mui/material/TablePagination";
 import { Typography } from "@material-ui/core";
 
 import CircularProgress from "@mui/material/CircularProgress";
-import { StyledTableCell, StyledTableRow } from "constants";
+import { StyledTableCell, StyledTableRow } from "utils";
 
 const EmailAddressTable = ({
   emailAddresses,
@@ -21,6 +21,7 @@ const EmailAddressTable = ({
   page,
   setPage,
 }) => {
+
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };

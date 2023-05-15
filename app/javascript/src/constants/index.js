@@ -1,7 +1,4 @@
 import { toast, Slide } from "react-toastify";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import { styled } from "@mui/material/styles";
-import TableRow from "@mui/material/TableRow";
 
 export const TOASTR_OPTIONS = {
   position: toast.POSITION.BOTTOM_CENTER,
@@ -9,21 +6,29 @@ export const TOASTR_OPTIONS = {
   theme: "colored",
 };
 
-export const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#3f51b5",
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
+export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+export const BOX_STYLE = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  borderRadius: "5px",
+  boxShadow: 24,
+  p: 4,
+};
+
+export const LOGIN_INITIAL_VALUES = {
+  email: "",
+  password: "",
+};
+
+export const SIGNUP_INITIAL_VALUES = {
+  email: "",
+  password: "",
+  passwordConfirmation: "",
+  firstName: "",
+  lastName: "",
+};

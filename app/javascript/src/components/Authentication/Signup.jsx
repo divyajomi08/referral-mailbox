@@ -1,31 +1,17 @@
 import React from "react";
+
 import { useFormik } from "formik";
 import { Button, TextField, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom/cjs/react-router-dom";
-import authenticationApis from "../../apis/authentication";
-
-const useStyles = makeStyles((theme) => ({
-  customButton: {
-    borderRadius: "8px",
-  },
-}));
+import authenticationApis from "apis/authentication";
+import { useButtonStyles, isEmailValid } from "utils";
+import { SIGNUP_INITIAL_VALUES } from "constants";
 
 const Signup = () => {
-  const classes = useStyles();
+  const classes = useButtonStyles();
   const queryParams = new URLSearchParams(window.location.search);
   const referralCode = queryParams.get("referral_code");
-
-  const initialValues = {
-    email: "",
-    password: "",
-    passwordConfirmation: "",
-    firstName: "",
-    lastName: "",
-  };
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  const isEmailValid = (email) => emailRegex.test(email);
+  const initialValues = SIGNUP_INITIAL_VALUES;
 
   const validate = (values) => {
     const errors = {};
@@ -38,7 +24,7 @@ const Signup = () => {
       errors.email = "Email is required";
     }
 
-    if(!isEmailValid(values.email)){
+    if (!isEmailValid(values.email)) {
       errors.email = "Email should be of valid format";
     }
 

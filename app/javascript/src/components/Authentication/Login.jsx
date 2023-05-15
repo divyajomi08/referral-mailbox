@@ -1,25 +1,17 @@
 import React, { useState } from "react";
+
 import { useFormik } from "formik";
 import { Button, TextField, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import authenticationApis from "../../apis/authentication";
-
-const useStyles = makeStyles((theme) => ({
-  customButton: {
-    borderRadius: "8px",
-  },
-}));
+import { Link } from "react-router-dom/cjs/react-router-dom";
+import authenticationApis from "apis/authentication";
+import { useButtonStyles } from "utils";
+import { LOGIN_INITIAL_VALUES } from "constants";
 
 const Login = () => {
-  const classes = useStyles();
-
   const [isLoading, setIsLoading] = useState(false);
-
-  const initialValues = {
-    email: "",
-    password: "",
-  };
+  
+  const classes = useButtonStyles();
+  const initialValues =  LOGIN_INITIAL_VALUES;
 
   const validate = (values) => {
     const errors = {};

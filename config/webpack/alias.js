@@ -6,7 +6,8 @@ module.exports = {
         components: "src/components",
         constants: "src/constants",
         utils: "src/utils",
-        hooks: "src/hooks"
+        hooks: "src/hooks",
+        translations: "src/translations"
       },
     },
   };

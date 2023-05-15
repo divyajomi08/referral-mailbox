@@ -1,29 +1,18 @@
-import React from 'react';
+import React from "react";
 
 import { Button, TextField, Modal, Typography, Box } from "@material-ui/core";
-import SendIcon from '@mui/icons-material/Send';
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  borderRadius: "5px",
-  boxShadow: 24,
-  p: 4,
-};
+import SendIcon from "@mui/icons-material/Send";
+import { isEmailValid } from "utils";
+import { BOX_STYLE } from "constants";
 
 const ReferralModal = ({
   isModalOpen,
   handleSubmit,
-  referredEmail, 
+  referredEmail,
   setReferredEmail,
   handleClose,
-  isLoading
+  isLoading,
 }) => {
-
   return (
     <Modal
       open={isModalOpen}
@@ -31,7 +20,7 @@ const ReferralModal = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box sx={BOX_STYLE}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Send New Referral
         </Typography>
@@ -63,7 +52,7 @@ const ReferralModal = ({
             size="medium"
             className="self-end"
             onClick={() => handleSubmit(referredEmail)}
-            disabled={isLoading}
+            disabled={isLoading || !isEmailValid(referredEmail)}
             endIcon={<SendIcon />}
           >
             Send

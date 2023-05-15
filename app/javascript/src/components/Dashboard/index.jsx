@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
   TextField,
@@ -10,18 +9,13 @@ import {
 import { Search, ExitToApp } from "@mui/icons-material";
 import EmailAddressTable from "./Table";
 import ReferralModal from "./ReferralModal";
-import referralApis from "../../apis/referrals";
-import authenticationApis from "../../apis/authentication";
+import referralApis from "apis/referrals";
+import authenticationApis from "apis/authentication";
 import useDebounce from "hooks/useDebounce";
-
-const useStyles = makeStyles({
-  iconColor: {
-    color: "grey",
-  },
-});
+import { useIconStyles } from "utils";
 
 const Dashboard = () => {
-  const classes = useStyles();
+  const classes = useIconStyles();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [referredEmail, setReferredEmail] = useState("");
