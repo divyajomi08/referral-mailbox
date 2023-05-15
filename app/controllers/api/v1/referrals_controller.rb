@@ -4,7 +4,7 @@ class Api::V1::ReferralsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @referrals = current_user.referrals.order(status: :desc)
+    @referrals, @referrals_count = search_and_paginate(current_user.referrals.order(status: :desc)).values_at(:paginated_data, :count)
   end
 
   def create

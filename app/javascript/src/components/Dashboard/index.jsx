@@ -12,6 +12,7 @@ import EmailAddressTable from "./Table";
 import ReferralModal from "./ReferralModal";
 import referralApis from "../../apis/referrals";
 import authenticationApis from "../../apis/authentication";
+import useDebounce from "hooks/useDebounce";
 
 const useStyles = makeStyles({
   iconColor: {
@@ -27,7 +28,11 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [emailAddresses, setEmailAddresses] = useState([]);
   const [isEmailsLoading, setIsEmailsLoading] = useState(true);
-  //const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const debounceSearchTerm = useDebounce(searchTerm, 300);
 
   const handleClose = () => {
     setReferredEmail("");
@@ -39,8 +44,12 @@ const Dashboard = () => {
   const fetchEmailAddresses = async () => {
     try {
       setIsEmailsLoading(true);
-      const response = await referralApis.fetchEmails();
-      setEmailAddresses(response.data.referrals);
+      const response = await referralApis.fetchEmails(
+        searchTerm,
+        page,
+        rowsPerPage
+      );
+      setEmailAddresses(response.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -74,7 +83,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchEmailAddresses();
-  }, []);
+  }, [debounceSearchTerm, page, rowsPerPage]);
 
   return (
     <div className="flex flex-col gap-6 m-8">
@@ -92,8 +101,8 @@ const Dashboard = () => {
           name="search"
           size="small"
           placeholder="Search"
-          // value={searchTerm}
-          // onChange={e=>setSearchTerm(e.target.value)}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
           InputProps={{
             style: { borderRadius: "8px" },
             startAdornment: (
@@ -115,6 +124,10 @@ const Dashboard = () => {
       <EmailAddressTable
         emailAddresses={emailAddresses}
         isEmailsLoading={isEmailsLoading}
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
+        page={page}
+        setPage={setPage}
       />
       <ReferralModal
         isModalOpen={isModalOpen}
