@@ -1,24 +1,27 @@
-# README
+## Referral Mailbox
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The Referral Mailbox App is a web application that allows users to send referral emails to any email address. It provides a convenient way to refer others to sign up for the platform and keeps track of the referred email addresses.
 
-Things you may want to cover:
+## Setup
 
-* Ruby version
+Follow these steps to set up the application on your local machine.
 
-* System dependencies
+### Step 1: Clone the repository
 
-* Configuration
+Clone this repository to your local machine:
 
-* Database creation
+```shell
+git clone https://github.com/divyajomi08/referral-mailbox.git
+```
 
-* Database initialization
+### Step 2: Run the following command in your terminal to setup the project
 
-* How to run the test suite
+```shell
+bin/setup
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+### Step 3: Run the following command in your terminal to run the server
 
-* Deployment instructions
-
-* ...
+```shell
+bin/dev
+```
